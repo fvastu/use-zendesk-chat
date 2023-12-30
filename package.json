@@ -1,6 +1,6 @@
 {
   "name": "@fvastu/use-zendesk-chat",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "An easy-to-use React hook for integrating Zendesk Chat into your React application.",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -49,5 +49,8 @@
     "hooks",
     "zendesk",
     "chat"
-  ]
+  ],
+  "dependencies": {
+    "@fvastu/use-zendesk-chat": "^0.0.1"
+  }
 }

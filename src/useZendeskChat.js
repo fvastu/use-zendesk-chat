@@ -1,34 +1,18 @@
 import { useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
 
 // Warning message for when Zendesk is not initialized
 const WARNING_MESSAGE = 'Zendesk is not initialized yet';
 
-// Type for callback functions
-type ZendeskCallbackFn = () => void;
-
 // Props for the useZendeskChat hook
-export type ZendeskChatProps = {
-    zendeskKey?: string;
-    fullUrl?: string;
-    defer?: boolean;
-    onLoaded?: ZendeskCallbackFn;
-    onOpen?: ZendeskCallbackFn;
-    onClose?: ZendeskCallbackFn;
+export const ZendeskChatProps = {
+    zendeskKey: PropTypes.string,
+    fullUrl: PropTypes.string,
+    defer: PropTypes.bool,
+    onLoaded: PropTypes.func,
+    onOpen: PropTypes.func,
+    onClose: PropTypes.func,
 };
-
-// Methods exposed by the useZendeskChat hook
-export type ZendeskChatMethods = {
-    open: ZendeskCallbackFn;
-    close: ZendeskCallbackFn;
-};
-
-// Augmenting the Window interface to include Zendesk properties
-declare global {
-    interface Window {
-        zE?: any;
-        zESettings?: any;
-    }
-}
 
 // The main useZendeskChat hook
 export const useZendeskChat = ({
@@ -37,17 +21,17 @@ export const useZendeskChat = ({
     defer,
     onLoaded = () => { },
     onOpen = () => { },
-    onClose = () => { }
-}: ZendeskChatProps): ZendeskChatMethods => {
+    onClose = () => { },
+}) => {
     // Reference to the script element
-    const scriptRef = useRef<HTMLScriptElement | null>(null);
+    const scriptRef = useRef(null);
 
     // Callback when the Zendesk script is loaded
     const onScriptLoaded = () => {
         onLoaded();
         // Register status change callbacks after script is loaded
-        registerStatusChangeCallback("open", onOpen);
-        registerStatusChangeCallback("close", onClose);
+        registerStatusChangeCallback('open', onOpen);
+        registerStatusChangeCallback('close', onClose);
     };
 
     // Function to insert the Zendesk script
@@ -60,7 +44,8 @@ export const useZendeskChat = ({
         }
         scriptRef.current.id = 'ze-snippet';
         // Set script source based on provided fullUrl or zendeskKey
-        scriptRef.current.src = fullUrl ?? `https://static.zdassets.com/ekr/snippet.js?key=${zendeskKey}`;
+        scriptRef.current.src =
+            fullUrl || `https://static.zdassets.com/ekr/snippet.js?key=${zendeskKey}`;
         scriptRef.current.addEventListener('load', onScriptLoaded);
         document.body.appendChild(scriptRef.current);
     };
@@ -72,12 +57,13 @@ export const useZendeskChat = ({
             delete window.zESettings;
             scriptRef.current && document.body.removeChild(scriptRef.current);
         }
-    }
+    };
 
     // Effect to run on mount and handle script insertion
     useEffect(() => {
         // Check if script should be inserted
-        const shouldInsertScript = typeof window !== 'undefined' && !window.zE && (fullUrl || zendeskKey);
+        const shouldInsertScript =
+            typeof window !== 'undefined' && !window.zE && (fullUrl || zendeskKey);
 
         if (shouldInsertScript) {
             insertScript();
@@ -95,7 +81,7 @@ export const useZendeskChat = ({
     };
 
     // Function to handle opening and closing of Zendesk chat
-    const handleStatus = (status: 'open' | 'close') => {
+    const handleStatus = (status) => {
         if (!isChatAvailable()) {
             console.warn(WARNING_MESSAGE);
             return;
@@ -105,7 +91,7 @@ export const useZendeskChat = ({
     };
 
     // Function to register a callback for status change
-    const registerStatusChangeCallback = (status: 'open' | 'close', callback: ZendeskCallbackFn) => {
+    const registerStatusChangeCallback = (status, callback) => {
         if (!isChatAvailable()) {
             console.warn(WARNING_MESSAGE);
             return;
@@ -121,3 +107,6 @@ export const useZendeskChat = ({
     // Return the exposed methods
     return { open, close };
 };
+
+// Prop types for the useZendeskChat hook
+useZendeskChat.propTypes = ZendeskChatProps;
