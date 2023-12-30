@@ -2,10 +2,13 @@
   "name": "@fvastu/use-zendesk-chat",
   "version": "1.0.0",
   "description": "React hook for integrating Zendesk Chat into React applications.",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/esm/index.d.ts",
   "scripts": {
-    "build": "tsc",
+    "build": "yarn build:esm && yarn build:cjs",
+    "build:esm": "tsc",
+    "build:cjs": "tsc --module commonjs --outDir dist/cjs",
     "lint": "eslint . --ext .ts",
     "test": "jest --config jestconfig.json",
     "prepare": "npm run build",
@@ -21,7 +24,7 @@
     "url": "git+https://github.com/fvastu/use-zendesk-chat.git"
   },
   "files": [
-    "lib/**/*"
+    "dist/**/*"
   ],
   "keywords": [
     "react",
