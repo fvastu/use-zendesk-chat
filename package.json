@@ -2,8 +2,8 @@
   "name": "@fvastu/use-zendesk-chat",
   "version": "0.0.2",
   "description": "An easy-to-use React hook for integrating Zendesk Chat into your React application.",
-  "main": "lib/index.js",
-  "module": "es/index.js",
+  "main": "lib/index",
+  "module": "es/index",
   "files": [
     "css",
     "es",
