@@ -1,7 +1,17 @@
 {
-  "extends": "react-app",
-  "plugins": ["react-hooks"],
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "@typescript-eslint"
+  ],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
   "rules": {
-    "react-hooks/rules-of-hooks": "error"
+    "no-console": 1,
+    "semi-style": ["error", "last"],
+    "semi": [2, "always"]
   }
 }
