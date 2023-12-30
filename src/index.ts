@@ -8,7 +8,7 @@ const WARNING_MESSAGE = "Zendesk is not initialized yet";
 type ZendeskCallbackFn = () => void;
 
 // Props for the useZendeskChat hook
-export type ZendeskChatProps = {
+type ZendeskChatProps = {
   zendeskKey?: string;
   fullUrl?: string;
   defer?: boolean;
@@ -18,7 +18,7 @@ export type ZendeskChatProps = {
 };
 
 // Methods exposed by the useZendeskChat hook
-export type ZendeskChatMethods = {
+type ZendeskChatMethods = {
   open: ZendeskCallbackFn;
   close: ZendeskCallbackFn;
 };
@@ -32,7 +32,7 @@ declare global {
 }
 
 // The main useZendeskChat hook
-export const useZendeskChat = ({
+const useZendeskChat = ({
   zendeskKey,
   fullUrl,
   defer,
@@ -127,3 +127,5 @@ export const useZendeskChat = ({
   // Return the exposed methods
   return { open, close };
 };
+
+export { ZendeskChatMethods, ZendeskChatProps, useZendeskChat };
